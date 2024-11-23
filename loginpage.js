@@ -41,6 +41,11 @@ app.post('/signup', async (req, res) => {
     try {
         const { username, password } = req.body;
 
+        // Input validation
+        if (!username || !password || password.trim().length < 6) {
+            return res.status(400).send("Username and password are required, and password must be at least 6 characters long.");
+        }
+        
         // Check if user exists
         const existingUser = await User.findOne({ name: username });
         if (existingUser) {
@@ -64,6 +69,11 @@ app.post('/signup', async (req, res) => {
 app.post('/login2', async (req, res) => {
     try {
         const { username, password } = req.body;
+
+        // Input validation
+        if (!username || !password) {
+            return res.status(400).send("Username and password are required.");
+        }
 
         // Find user in DB
         const user = await User.findOne({ name: username });
